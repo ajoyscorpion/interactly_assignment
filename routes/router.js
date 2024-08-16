@@ -24,7 +24,4 @@ router.get('/makeCall',contactsController.makeCall)
 // process user input 
 router.post('/gather',contactsController.gatherDigit)
 
-// twilio
-//router.get('/gather',contactsController)
-
 module.exports = router

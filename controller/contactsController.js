@@ -242,33 +242,17 @@ exports.deleteContact = async(req,res) => {
 }
 
 
-// get twilio 
-exports.getCall = async(req,res) => {
-    try {
-        const digits = req.query.Digits;
-
-        if (digits === '1') {
-            res.send('<Response><Say>Thank you! We will send you a personalized interview link shortly.</Say></Response>');
-            // Send the personalized interview link via SMS or Email
-        } else {
-            res.send('<Response><Say>No input detected. Goodbye!</Say></Response>');
-        }
-
-    } catch (error) {
-        res.status(400).json('Failed to get response')
-    }
-}
-
 const toNumber = '+918113000923'
 const fromNumber = process.env.TWILIO_NUMBER
+const audioClipUrl = 'https://storage.cloud.google.com/interactly_audio/Fara%20interview%20audio.mp3'
 
 exports.makeCall = () => {
     return twilio.calls.create({
         to: toNumber,
         from: fromNumber,
         twiml: `<Response>
-                    <Gather action="/gather" method="POST">
-                        <Say>Welcome to the interview scheduling system. Press 1 to receive a personalized interview link.</Say>
+                    <Gather action="http://localhost:3000/gather" method="POST"> 
+                        <Play>${audioClipUrl}</Play>
                     </Gather>
                     <Pause length="5"/>
                     <Say>No input detected. Goodbye!</Say>
@@ -295,7 +279,7 @@ exports.gatherDigit = async (req,res) => {
                 to:toNumber
             })
 
-            console.log(`SMS sent`);
+            console.log(`SMS sent with SID: ${message.sid}`);
             res.send(`<Response><Say>Thank you! We have sent you a personalized interview link via SMS.</Say></Response>`);
 
         } else if (digits === 2) {
@@ -320,3 +304,4 @@ exports.gatherDigit = async (req,res) => {
 
 
 
+// <Say>Welcome to the interview scheduling system. Press 1 to receive a personalized interview link.</Say>

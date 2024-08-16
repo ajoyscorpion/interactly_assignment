@@ -9,7 +9,7 @@ const server = express()
 
 server.use(express.json())
 server.use(router)
-server.use(express.urlencoded({extended: false }))
+//server.use(express.urlencoded({extended: false }))
 
 const PORT = process.env.PORT || 3000
 
